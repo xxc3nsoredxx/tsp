@@ -3,8 +3,10 @@
 
 #include "fbg/screen.h"
 
+#include "parray.h"
+
 unsigned int npoints = 0;
-struct point_s *points = 0;
+struct parray_s *points = 0;
 
 void usage () {
     printf("Usage:\n");
@@ -36,13 +38,12 @@ int main (int argc, char **argv) {
     fscanf(infile, " %u", &npoints);
 
     /* Read the points into the array */
-    points = calloc(npoints, sizeof(*points));
     for (cx = 0; cx < npoints; cx++) {
         unsigned int x = 0;
         unsigned int y = 0;
 
         fscanf(infile, " (%u,%u)", &x, &y);
-        *(points + cx) = point(x, y);
+        points = push(points, point(x, y));
     }
 
     /* Close infile since it is no longer needed */
@@ -50,12 +51,10 @@ int main (int argc, char **argv) {
 
     printf("Numbr of points: %u\n", npoints);
     printf("Points:\n");
-    for (cx = 0; cx < npoints; cx++) {
-        printf("  (%u,%u)\n", (points + cx)->x, (points + cx)->y);
-    }
+    parray_print(points);
 
     /* Clean up */
-    free(points);
+    parray_delete(points);
 
     return 0;
 }
