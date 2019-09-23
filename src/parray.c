@@ -132,6 +132,58 @@ struct point_s parray_remove (struct parray_s *a, unsigned int i) {
     return ret;
 }
 
+/* Test if two points are equal */
+int point_equals (struct point_s p1, struct point_s p2) {
+    return p1.x == p2.x && p1.y == p2.y;
+}
+
+/* Remove a specified point from the array */
+void parray_remove_point (struct parray_s *a, struct point_s p) {
+    unsigned int pos;
+    int found = 0;
+    struct parray_element_s *prev;
+    struct parray_element_s *cur;
+
+    cur = a->head;
+    for (pos = 0; pos < a->len; pos++) {
+        if (point_equals(cur->point, p)) {
+            found = 1;
+            break;
+        }
+
+        prev = cur;
+        cur = cur->next;
+    }
+
+    /* Point not found, do nothing */
+    if (!found) {
+        return;
+    }
+
+    /* First element */
+    if (pos == 0) {
+        a->head = cur->next;
+        free(cur);
+        a->len--;
+
+        /* Only element */
+        if (a->len == 0) {
+            a->tail = 0;
+        }
+
+        return;
+    }
+
+    prev->next = cur->next;
+    free(cur);
+    a->len--;
+
+    /* Last element */
+    if (pos == a->len) {
+        a->tail = prev;
+    }
+}
+
 /* Print the contents of a parray_s */
 void parray_print (struct parray_s *a) {
     struct parray_element_s *cur = a->head;

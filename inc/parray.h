@@ -22,6 +22,8 @@ struct point_s parray_get (struct parray_s *a, unsigned int i);
 
 struct point_s parray_remove (struct parray_s *a, unsigned int i);
 
+void parray_remove_point (struct parray_s *a, struct point_s p);
+
 void parray_print (struct parray_s *a);
 
 void parray_delete (struct parray_s *a);
