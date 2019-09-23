@@ -198,11 +198,30 @@ void parray_print (struct parray_s *a) {
     }
 }
 
+/* Return a point_s array created from a parray_s */
+struct point_s* parray_to_array (struct parray_s *a) {
+    struct point_s *ret = calloc(a->len, sizeof(*ret));
+    unsigned int cx;
+    struct parray_element_s *cur;
+
+    for (cx = 0, cur = a->head; cx < a->len; cx++, cur = cur->next) {
+        *(ret + cx) = cur->point;
+    }
+
+    return ret;
+}
+
 /* Free up the memory used by a parray_s */
 void parray_delete (struct parray_s *a) {
     struct parray_element_s *old;
-    struct parray_element_s *cur = a->head;
+    struct parray_element_s *cur;
 
+    /* Do nothing if a is NULL */
+    if (!a) {
+        return;
+    }
+
+    cur = a->head;
     while (cur) {
         old = cur;
         cur = cur->next;

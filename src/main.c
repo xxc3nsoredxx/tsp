@@ -3,10 +3,12 @@
 
 #include "fbg/screen.h"
 
+#include "hull.h"
 #include "parray.h"
 
 unsigned int npoints = 0;
 struct parray_s *points = 0;
+struct parray_s *con_hull = 0;
 
 void usage () {
     printf("Usage:\n");
@@ -50,11 +52,27 @@ int main (int argc, char **argv) {
     /* Close infile since it is no longer needed */
     fclose(infile);
 
+    printf("Read points\n");
+    printf("===========\n");
     printf("Numbr of points: %u\n", npoints);
     printf("Points:\n");
     parray_print(points);
 
+    /* Calculate a convex hull */
+    printf("\n");
+    printf("Calculate a convex hull\n");
+    printf("=======================\n");
+    con_hull = calc_hull(points);
+
+    printf("\n");
+    printf("Convex hull\n");
+    printf("===========\n");
+    printf("Convex hull size: %lu\n", con_hull->len);
+    printf("Points:\n");
+    parray_print(con_hull);
+
     /* Clean up */
+    parray_delete(con_hull);
     parray_delete(points);
 
     return 0;

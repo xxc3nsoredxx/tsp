@@ -26,6 +26,8 @@ void parray_remove_point (struct parray_s *a, struct point_s p);
 
 void parray_print (struct parray_s *a);
 
+struct point_s* parray_to_array (struct parray_s *a);
+
 void parray_delete (struct parray_s *a);
 
 #endif /* PARRAY_H_20190922_010640 */
