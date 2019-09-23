@@ -38,12 +38,13 @@ int main (int argc, char **argv) {
     fscanf(infile, " %u", &npoints);
 
     /* Read the points into the array */
+    points = parray_init();
     for (cx = 0; cx < npoints; cx++) {
         unsigned int x = 0;
         unsigned int y = 0;
 
         fscanf(infile, " (%u,%u)", &x, &y);
-        points = push(points, point(x, y));
+        parray_push(points, point(x, y));
     }
 
     /* Close infile since it is no longer needed */
