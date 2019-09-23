@@ -1,3 +1,4 @@
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -10,6 +11,18 @@ struct parray_s* parray_init () {
     struct parray_s *ret = 0;
 
     ret = calloc(1, sizeof(*ret));
+
+    return ret;
+}
+
+/* Initialize a parray_s from a point_s array */
+struct parray_s* parray_from_array (struct point_s *a, size_t len) {
+    struct parray_s *ret = parray_init();
+    unsigned int cx;
+
+    for (cx = 0; cx < len; cx++) {
+        parray_push(ret, *(a + cx));
+    }
 
     return ret;
 }
@@ -73,6 +86,10 @@ void parray_add (struct parray_s *a, unsigned int i, struct point_s p) {
 struct point_s parray_get (struct parray_s *a, unsigned int i) {
     unsigned int cx;
     struct parray_element_s *cur;
+
+    if (i >= a->len) {
+        return point(UINT_MAX, UINT_MAX);
+    }
 
     for (cx = 0, cur = a->head; cx < i; cx++) {
         cur = cur->next;
@@ -208,6 +225,15 @@ struct point_s* parray_to_array (struct parray_s *a) {
         *(ret + cx) = cur->point;
     }
 
+    return ret;
+}
+
+/* Return a copy of a parray_s */
+struct parray_s* parray_copy (struct parray_s *a) {
+    struct point_s *points = parray_to_array(a);
+    struct parray_s *ret = parray_from_array(points, a->len);
+
+    free(points);
     return ret;
 }
 

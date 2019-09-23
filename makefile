@@ -5,7 +5,7 @@ BIN = bin
 LIB = lib
 INC = inc
 OBJS = $(BIN)/main.o $(BIN)/parray.o $(BIN)/hull.o
-LFLAGS = -L$(LIB) -lfbg
+LFLAGS = -L$(LIB) -lfbg -lm
 IFLAGS = -I$(INC)
 
 all: $(BIN)/tsp

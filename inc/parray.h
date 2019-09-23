@@ -14,6 +14,8 @@ struct parray_s {
 
 struct parray_s* parray_init ();
 
+struct parray_s* parray_from_array (struct point_s *a, size_t len);
+
 void parray_push (struct parray_s *a, struct point_s p);
 
 void parray_add (struct parray_s *a, unsigned int i, struct point_s p);
@@ -27,6 +29,8 @@ void parray_remove_point (struct parray_s *a, struct point_s p);
 void parray_print (struct parray_s *a);
 
 struct point_s* parray_to_array (struct parray_s *a);
+
+struct parray_s* parray_copy (struct parray_s *a);
 
 void parray_delete (struct parray_s *a);
 
