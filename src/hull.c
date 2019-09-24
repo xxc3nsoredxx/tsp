@@ -30,15 +30,15 @@ int pcmp (struct point_s p0, struct point_s p1, struct point_s p2) {
     m2norm = m2n * m1d;
 
     /* Return the comparison */
-    printf("(%u,%u) (%u,%u) ", p1.x, p1.y, p2.x, p2.y);
+    /* printf("(%u,%u) (%u,%u) ", p1.x, p1.y, p2.x, p2.y); */
     if (m1norm < m2norm) {
-        printf("<\n");
+        /* printf("<\n"); */
         return -1;
     } else if (m1norm > m2norm) {
-        printf(">\n");
+        /* printf(">\n"); */
         return 1;
     } else {
-        printf("=\n");
+        /* printf("=\n"); */
         return 0;
     }
 }
@@ -99,17 +99,19 @@ struct parray_s *calc_hull (struct parray_s *a) {
             p0 = *(points + cx);
         }
     }
-    printf("P0: (%u,%u)\n", p0.x, p0.y);
+    /* printf("P0: (%u,%u)\n", p0.x, p0.y); */
     parray_remove_point(a2, p0);
     free(points);
     points = parray_to_array(a2);
 
     /* Sort points based on P0 */
     sorted = sort(p0, points, a2->len);
+    /*
     printf("Sorted points:\n");
     for (cx = 0; cx < a2->len; cx++) {
         printf("(%u,%u)\n", (sorted + cx)->x, (sorted + cx)->y);
     }
+    */
 
     /* Scan through all the points */
     for (cx = 0; cx < a2->len; cx++) {
@@ -129,5 +131,6 @@ struct parray_s *calc_hull (struct parray_s *a) {
 
     free(sorted);
     free(points);
+    parray_delete(a2);
     return ret;
 }

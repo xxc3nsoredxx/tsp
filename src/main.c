@@ -8,7 +8,8 @@
 
 unsigned int npoints = 0;
 struct parray_s *points = 0;
-struct parray_s *con_hull = 0;
+struct parray_s **con_hulls = 0;
+size_t nhulls = 0;
 
 void usage () {
     printf("Usage:\n");
@@ -58,21 +59,34 @@ int main (int argc, char **argv) {
     printf("Points:\n");
     parray_print(points);
 
-    /* Calculate a convex hull */
-    printf("\n");
-    printf("Calculate a convex hull\n");
-    printf("=======================\n");
-    con_hull = calc_hull(points);
+    while(points->len > 0) {
+        struct parray_s *hull = 0;
+        /* Allocate space for a new convex hull */
+        nhulls++;
+        con_hulls = realloc(con_hulls, nhulls * sizeof(*con_hulls));
 
-    printf("\n");
-    printf("Convex hull\n");
-    printf("===========\n");
-    printf("Convex hull size: %lu\n", con_hull->len);
-    printf("Points:\n");
-    parray_print(con_hull);
+        /* Calcuate a convex hull */
+        hull = calc_hull(points);
+        printf("\n");
+        printf("Convex hull\n");
+        printf("===========\n");
+        printf("Convex hull size: %lu\n", hull->len);
+        printf("Points:\n");
+        parray_print(hull);
+
+        /* Remove the convex hull from the list of points */
+        for (cx = 0; cx < hull->len; cx++) {
+            parray_remove_point(points, parray_get(hull, cx));
+        }
+
+        *(con_hulls + (nhulls - 1)) = hull;
+    }
 
     /* Clean up */
-    parray_delete(con_hull);
+    for (cx = 0; cx < nhulls; cx++) {
+        parray_delete(*(con_hulls + cx));
+    }
+    free(con_hulls);
     parray_delete(points);
 
     return 0;
